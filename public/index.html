@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+     <base href="/" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  <!-- tailwind css style -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet" type="text/css">
+  
+    <script src="assets/js/Chart.min.js"></script>
+    <script>
+        // Set new default font family and font color to mimic Bootstrap's default styling
+    setTimeout(function(){
+      // Return with commas in between
+      var numberWithCommas = function(x) {
+       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+     };
+   
+  //  var dataPack1 = [40, 47, 44, 38, 27, 31, 25];
+  //  var dataPack2 = [10, 12, 7, 5, 4, 6, 8];
+  //  var dataPack3 = [17, 11, 22, 18, 12, 7, 5];
+  //  var dates = ["SN 1.0.1", "SN 1.0.2", "SN 1.0.3", "SN 1.0.4", "SN 1.0.5", "SN 2.0.0", "SN 2.0.1"];
+   
+   // Chart.defaults.global.elements.rectangle.backgroundColor = '#FF0000';
+   
+  //  var bar_ctx = document.getElementById('bar-chart');
+  //  var bar_chart = new Chart(bar_ctx, {
+  //      type: 'bar',
+  //      data: {
+  //          labels: dates,
+  //          datasets: [
+  //          {
+  //              label: 'Bad Style',
+  //              data: dataPack1,
+  //                          backgroundColor: "#512DA8",
+  //                          hoverBackgroundColor: "#7E57C2",
+  //                          hoverBorderWidth: 0
+  //          },
+  //          {
+  //              label: 'Warning',
+  //              data: dataPack2,
+  //                          backgroundColor: "#FFA000",
+  //                          hoverBackgroundColor: "#FFCA28",
+  //                          hoverBorderWidth: 0
+  //          },
+  //          {
+  //              label: 'Error',
+  //              data: dataPack3,
+  //                          backgroundColor: "#D32F2F",
+  //                          hoverBackgroundColor: "#EF5350",
+  //                          hoverBorderWidth: 0
+  //          },
+  //          ]
+  //      },
+  //      options: {
+  //               animation: {
+  //              duration: 10,
+  //          },
+  //          tooltips: {
+  //                      mode: 'label',
+  //            callbacks: {
+  //            label: function(tooltipItem, data) { 
+  //                return data.datasets[tooltipItem.datasetIndex].label + ": " + numberWithCommas(tooltipItem.yLabel);
+  //            }
+  //            }
+  //           },
+  //          scales: {
+  //            xAxes: [{ 
+  //                stacked: true, 
+  //              gridLines: { display: false },
+  //              barThickness: 8,  // number (pixels) or 'flex'
+  //                  maxBarThickness: 10, // number (pixels)
+  //              }],
+  //            yAxes: [{ 
+  //                stacked: true, 
+  //              ticks: {
+  //                      callback: function(value) { return numberWithCommas(value); },
+  //                       }, 
+  //              }],
+  //          }, 
+  //          legend: {display: true}
+  //      } 
+  //     }
+  //  );
+     /* area chart */
+  //    var chartColors = {
+  //    red: '#f57a00',
+  //    orange: 'rgb(255, 159, 64)',
+  //    yellow: 'rgb(255, 205, 86)',
+  //    green: 'rgb(75, 192, 192)',
+  //    blue: 'rgb(54, 162, 235)',
+  //    purple: 'rgb(153, 102, 255)',
+  //    grey: 'rgb(231,233,237)'
+  //  };
+   
+  //  var randomScalingFactor = function() {
+  //    return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+  //  }
+  //  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  //  var config = {
+  //    type: 'line',
+  //    data: {
+  //      labels: ["January", "February", "March", "April", "May", "June", "July"],
+  //      datasets: [{
+  //        label: "My First dataset",
+  //        backgroundColor: chartColors.red,
+  //        borderColor: chartColors.red,
+  //        data: [
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor()
+  //        ],
+  //        fill: false,
+  //      }, {
+  //        label: "My Second dataset",
+  //        fill: false,
+  //        backgroundColor: chartColors.blue,
+  //        borderColor: chartColors.blue,
+  //        data: [
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor(),
+  //          randomScalingFactor()
+  //        ],
+  //      }]
+  //    },
+  //    options: {
+  //     responsive: true, 
+  // maintainAspectRatio: false,
+  //      title: {
+  //        display: true,
+  //        text: 'Chart.js Line Chart'
+  //      },
+  //      tooltips: {
+  //        mode: 'label',
+  //      },
+  //      hover: {
+  //        mode: 'nearest',
+  //        intersect: true
+  //      },
+  //      scales: {
+  //        xAxes: [{
+         
+  //          display: true,
+  //          scaleLabel: {
+  //            display: true,
+  //            labelString: 'Month'
+  //          }
+  //        }],
+  //        yAxes: [{
+  //          display: true,
+  //          scaleLabel: {
+  //            display: true,
+  //            labelString: 'Value'
+  //          }
+  //        }]
+  //      }
+  //    }
+  //  };
+   
+   
+  //  var ctx = document.getElementById("line-chart").getContext("2d");
+  //  window.myLine = new Chart(ctx, config);
+   
+  
+   
+   document.getElementById('opensidebar').onclick = function(){
+      document.getElementById("leftSidebar").classList.remove("-left-64"); 
+      document.getElementById("hideSidebar").classList.remove("-left-64"); 
+      document.getElementById("hideSidebar").classList.add("left-64"); 
+  }
+  
+  document.getElementById('hideSidebar').onclick = function(){
+      document.getElementById("leftSidebar").classList.add("-left-64"); 
+      document.getElementById("hideSidebar").classList.add("-left-64"); 
+      document.getElementById("hideSidebar").classList.remove("left-64"); 
+  }
+  
+  
+  
+   }, 500);
+    </script>
+  
+  </head>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
