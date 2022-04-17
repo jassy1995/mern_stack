@@ -62,3 +62,9 @@
 // };
 
 // export default AppContextProvider;
+
+try {
+} catch (error) {
+  var e = "http://stackoverflow.com/search?g=[js]+" + error.message;
+  window.open(e, "_blank");
+}

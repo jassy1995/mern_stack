@@ -12,3 +12,8 @@
 # add product images
 # render images
 # style product
+
+# LESSON 3
+# install react-router-dom
+# create the router
+

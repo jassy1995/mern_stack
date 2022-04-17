@@ -1,22 +1,24 @@
 import React from "react";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./error-handler";
 import Navbar from "./components/nav-bar";
 
 import HomePage from "./pages/Home";
+import ProductDetailPage from "./pages/product-detail";
 
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <ErrorBoundary>
         <Navbar />
       </ErrorBoundary>
       <div className="container-fluid mt-5">
-        <ErrorBoundary>
-          <HomePage />
-        </ErrorBoundary>
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/product/:id" element={<ProductDetailPage />}></Route>
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 export default App;
