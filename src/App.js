@@ -1,20 +1,22 @@
 import React from "react";
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ErrorBoundary from "./error-handler";
+import Navbar from "./components/nav-bar";
 
-// import axios from "axios";
-
-// import AppContextProvider from "./api/context";
+import HomePage from "./pages/Home";
 
 function App() {
   return (
-    <>
-      <div>
-        <header>
-          <a href="https://">amazon</a>
-        </header>
-        <main>list</main>
+    <div>
+      <ErrorBoundary>
+        <Navbar />
+      </ErrorBoundary>
+      <div className="container-fluid mt-5">
+        <ErrorBoundary>
+          <HomePage />
+        </ErrorBoundary>
       </div>
-    </>
+    </div>
   );
 }
 export default App;
