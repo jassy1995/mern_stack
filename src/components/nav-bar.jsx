@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/NavBar";
 import Nav from "react-bootstrap/Nav";
 // import NavDropdown from "react-bootstrap/NavDropdown";
-import FormControl from "react-bootstrap/FormControl";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { Search } from "react-bootstrap-icons";
+// import FormControl from "react-bootstrap/FormControl";
+// import Form from "react-bootstrap/Form";
+// import Button from "react-bootstrap/Button";
+// import { Search } from "react-bootstrap-icons";
+import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
+import { Store } from "../store";
 
 function NavBar() {
+  const { state } = useContext(Store);
+  const { cart } = state;
   return (
     <div>
       <Navbar bg="light" expand="md" fixed="top">
         <Container fluid>
-          <Navbar.Brand href="#">My Store</Navbar.Brand>
+          <Navbar.Brand to="/">My Store</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -21,7 +27,12 @@ function NavBar() {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="/">Home</Nav.Link>
+              <LinkContainer to="/">
+                <Nav.Link>Home</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/search">
+                <Nav.Link>Products</Nav.Link>
+              </LinkContainer>
 
               {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -34,7 +45,7 @@ function NavBar() {
                 </NavDropdown.Item>
               </NavDropdown> */}
             </Nav>
-            <Form className="d-flex me-auto align-middle">
+            {/* <Form className="d-flex me-auto align-middle">
               <FormControl
                 type="search"
                 placeholder="Search"
@@ -44,14 +55,20 @@ function NavBar() {
               <Button variant="outline-success">
                 <Search />
               </Button>
-            </Form>
+            </Form> */}
             <div className="d-flex gap-4 me-2">
-              <a className="text-decoration-none " href="/cart">
-                Cart
-              </a>
-              <a className="text-decoration-none " href="/signin">
+              <Link className="nav-link" to="/cart">
+                Cart{" "}
+                {cart.cartItems.length > 0 && (
+                  <Badge pill bg="danger">
+                    {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    {/* {cart.cartItems.length} */}
+                  </Badge>
+                )}
+              </Link>
+              <Link className="nav-link" to="/signin">
                 Login
-              </a>
+              </Link>
             </div>
           </Navbar.Collapse>
         </Container>

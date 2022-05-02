@@ -1,22 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./error-handler";
 import Navbar from "./components/nav-bar";
-
-import HomePage from "./pages/Home";
-import ProductDetailPage from "./pages/product-detail";
+import HomePage from "./pages/homePage";
+import ProductPage from "./pages/productPage";
+import ProductDetailPage from "./pages/productDetailPage";
+import NotFoundPage from "./pages/notFoundPage";
 
 function App() {
   return (
     <BrowserRouter>
-      <ErrorBoundary>
-        <Navbar />
-      </ErrorBoundary>
-      <div className="container-fluid mt-5">
-        <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/product/:id" element={<ProductDetailPage />}></Route>
-        </Routes>
+      <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+        <ErrorBoundary>
+          <Navbar />
+        </ErrorBoundary>
+        <div className="container-fluid mt-5" style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<HomePage />}></Route>
+            <Route path="/product/:id" element={<ProductDetailPage />}></Route>
+            <Route path="/search" element={<ProductPage />}></Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+        <footer>
+          <div
+            className="text-center p-3  text-white"
+            style={{ backgroundColor: "#409EFF", marginTop: "10px" }}
+          >
+            All right reserved
+          </div>
+        </footer>
       </div>
     </BrowserRouter>
   );
