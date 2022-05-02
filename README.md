@@ -31,3 +31,8 @@
 # create sign in page
 # add email and password
 # add signin button
+
+# LESSON 19
+# handle submit action
+# save token in store and local storage
+# show user name in header

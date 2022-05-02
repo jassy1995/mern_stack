@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/NavBar";
 import Nav from "react-bootstrap/Nav";
-// import NavDropdown from "react-bootstrap/NavDropdown";
+import NavDropdown from "react-bootstrap/NavDropdown";
 // import FormControl from "react-bootstrap/FormControl";
 // import Form from "react-bootstrap/Form";
 // import Button from "react-bootstrap/Button";
@@ -13,8 +13,13 @@ import Badge from "react-bootstrap/Badge";
 import { Store } from "../store";
 
 function NavBar() {
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+  };
   return (
     <div>
       <Navbar bg="light" expand="md" fixed="top">
@@ -56,7 +61,7 @@ function NavBar() {
                 <Search />
               </Button>
             </Form> */}
-            <div className="d-flex gap-4 me-2">
+            <div className="d-flex gap-4  me-5">
               <Link className="nav-link" to="/cart">
                 Cart{" "}
                 {cart.cartItems.length > 0 && (
@@ -66,10 +71,37 @@ function NavBar() {
                   </Badge>
                 )}
               </Link>
-              <Link className="nav-link" to="/signin">
+              {/* <Link className="nav-link" to="/signin">
                 Login
-              </Link>
+              </Link> */}
             </div>
+
+            {userInfo ? (
+              <NavDropdown
+                title={userInfo.name}
+                id="basic-nav-dropdown"
+                className="me-5"
+              >
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>User Profile</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/orderhistory">
+                  <NavDropdown.Item>Order History</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <Link
+                  className="dropdown-item"
+                  to="/signin"
+                  onClick={signoutHandler}
+                >
+                  Sign Out
+                </Link>
+              </NavDropdown>
+            ) : (
+              <Link className="nav-link" to="/signin">
+                Sign In
+              </Link>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

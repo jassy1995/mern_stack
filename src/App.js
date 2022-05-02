@@ -8,11 +8,14 @@ import ProductDetailPage from "./pages/productDetailPage";
 import NotFoundPage from "./pages/notFoundPage";
 import CartPage from "./pages/cartPage";
 import SignInPage from "./pages/signInPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+        <ToastContainer position="top-right" limit={1} />
         <ErrorBoundary>
           <Navbar />
         </ErrorBoundary>
