@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { productReducer, initialState } from "../api/reducers";
 import Row from "react-bootstrap/Row";
@@ -34,6 +34,7 @@ function ProductDetailPage() {
   const imageLarge = {
     maxWidth: "100vh",
   };
+  const navigate = useNavigate();
   const params = useParams();
   const { id } = params;
   const [{ loading, error, product }, dispatch] = useReducer(
@@ -69,6 +70,7 @@ function ProductDetailPage() {
       type: "ADD_TO_CART",
       payload: { ...product, quantity: qty },
     });
+    navigate("/cart");
   };
   return (
     <div className="mt-3">
