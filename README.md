@@ -27,3 +27,7 @@
 #  click handler for remove item
 #  click handler for checkout
 
+# LESSON 18
+# create sign in page
+# add email and password
+# add signin button

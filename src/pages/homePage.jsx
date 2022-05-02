@@ -37,7 +37,7 @@ function Home() {
       try {
         const result = await axios.get("/api/products");
 
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data.products });
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
         console.log(error);
         dispatch({ type: "FETCH_FAIL", payload: errorHandler(error) });
