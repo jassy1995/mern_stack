@@ -1,13 +1,33 @@
 // import React, { useState, useEffect } from "react";
+import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { formatter } from "../script/formatter";
 // import { Star } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import Rating from "./rating";
-import { useContext } from "react";
+import axios from "axios";
+import { Store } from "../store";
 
-function ListProduct({ product, addToCartHandler }) {
+function ListProduct({ product }) {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const {
+    cart: { cartItems },
+  } = state;
+
+  const addToCartHandler = async (item) => {
+    const existItem = cartItems.find((x) => +x._id === +product._id);
+    const qty = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.count < qty) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "ADD_TO_CART",
+      payload: { ...item, quantity: qty },
+    });
+  };
   return (
     <Card>
       <Link to={`/product/${product._id}`}>
@@ -25,13 +45,26 @@ function ListProduct({ product, addToCartHandler }) {
           <strong className="text-start fs-5 fw-bolder">
             {formatter(product.price)}
           </strong>
-          <Button
+          {/* <Button
             variant="warning"
             className="float-end"
             // onCLick={addToCartHandler}
           >
             Add to cart
-          </Button>
+          </Button> */}
+          {product.count === 0 ? (
+            <Button variant="light" className="float-end" disabled>
+              Out of stock
+            </Button>
+          ) : (
+            <Button
+              variant="warning"
+              className="float-end"
+              onClick={() => addToCartHandler(product)}
+            >
+              Add to cart
+            </Button>
+          )}
         </Card.Text>
       </Card.Body>
     </Card>

@@ -17,3 +17,13 @@
 # install react-router-dom
 # create the router
 
+# LESSON 16
+# create 2 columns
+# display items list
+# create action column
+
+# LESSON 17
+# click handler for inc/dec item
+#  click handler for remove item
+#  click handler for checkout
+
