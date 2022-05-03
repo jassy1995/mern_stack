@@ -19,10 +19,13 @@ function NavBar() {
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    window.location.href = "/signin";
   };
   return (
     <div>
-      <Navbar bg="light" expand="md" fixed="top">
+      {/* <Navbar bg="light" expand="lg" fixed="top">
         <Container fluid>
           <Navbar.Brand to="/">My Store</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -38,42 +41,17 @@ function NavBar() {
               <LinkContainer to="/search">
                 <Nav.Link>Products</Nav.Link>
               </LinkContainer>
-
-              {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">
-                  Something else here
-                </NavDropdown.Item>
-              </NavDropdown> */}
             </Nav>
-            {/* <Form className="d-flex me-auto align-middle">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">
-                <Search />
-              </Button>
-            </Form> */}
+
             <div className="d-flex gap-4  me-5">
               <Link className="nav-link" to="/cart">
                 Cart{" "}
                 {cart.cartItems.length > 0 && (
                   <Badge pill bg="danger">
                     {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    {/* {cart.cartItems.length} */}
                   </Badge>
                 )}
               </Link>
-              {/* <Link className="nav-link" to="/signin">
-                Login
-              </Link> */}
             </div>
 
             {userInfo ? (
@@ -102,6 +80,62 @@ function NavBar() {
                 Sign In
               </Link>
             )}
+          </Navbar.Collapse>
+        </Container>
+      </Navbar> */}
+      <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>Home</Navbar.Brand>
+          </LinkContainer>
+          <LinkContainer to="/products" className="text-light">
+            <Nav.Link>Products</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/cart" className="d-block d-md-none">
+            <div className="nav-link text-light">
+              {" "}
+              Cart{" "}
+              {cart.cartItems.length > 0 && (
+                <Badge pill bg="danger">
+                  {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                </Badge>
+              )}
+            </div>
+          </LinkContainer>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto  w-100  justify-content-end">
+              <Link to="/cart" className="nav-link">
+                Cart
+                {cart.cartItems.length > 0 && (
+                  <Badge pill bg="danger">
+                    {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                  </Badge>
+                )}
+              </Link>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>User Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/orderhistory">
+                    <NavDropdown.Item>Order History</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Divider />
+                  <Link
+                    className="dropdown-item"
+                    to="#signout"
+                    onClick={signoutHandler}
+                  >
+                    Sign Out
+                  </Link>
+                </NavDropdown>
+              ) : (
+                <Link className="nav-link" to="/signin">
+                  Sign In
+                </Link>
+              )}
+            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

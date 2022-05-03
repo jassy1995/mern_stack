@@ -8,6 +8,13 @@ import ProductDetailPage from "./pages/productDetailPage";
 import NotFoundPage from "./pages/notFoundPage";
 import CartPage from "./pages/cartPage";
 import SignInPage from "./pages/signInPage";
+import ShippingAddressPage from "./pages/shippingAddressPage";
+import SignupPage from "./pages/signupPage";
+import PaymentMethodPage from "./pages/paymentMethodPage";
+import PlaceOrderPage from "./pages/placeOrderPage";
+import OrderHistoryPage from "./pages/orderHistoryPage";
+import OrderPage from "./pages/orderPage";
+import ProfilePage from "./pages/profilePage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -25,7 +32,14 @@ function App() {
             <Route path="/product/:id" element={<ProductDetailPage />}></Route>
             <Route path="/cart" element={<CartPage />}></Route>
             <Route path="/signin" element={<SignInPage />} />
-            <Route path="/search" element={<ProductPage />}></Route>
+            <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/payment" element={<PaymentMethodPage />}></Route>
+            <Route path="/placeorder" element={<PlaceOrderPage />} />
+            <Route path="/order/:id" element={<OrderPage />}></Route>
+            <Route path="/orderhistory" element={<OrderHistoryPage />}></Route>
+            <Route path="/products" element={<ProductPage />}></Route>
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
