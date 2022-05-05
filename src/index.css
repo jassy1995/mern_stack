@@ -22,3 +22,42 @@ body {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
 }
+
+/* .site-container{
+  min-height: 100vh;
+} */
+
+.btn-primary,
+.btn-outline-primary {
+  background-color: #f0c040;
+  color: #000000;
+}
+
+/* sidebar */
+.navbar-brand {
+  font-weight: bold;
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #100901;
+  transition: 0.5s;
+  padding-top: 80px;
+}
+
+.site-container {
+  min-height: 100vh;
+  transition: 0.4s;
+  padding-top: 50px;
+}
+.active-cont {
+  margin-left: 240px;
+}
+.active-nav {
+  left: 0;
+}
+.text-bold {
+  font-weight: bold;
+}

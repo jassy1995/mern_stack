@@ -1,4 +1,4 @@
-function Rating({ rating, review }) {
+function Rating({ rating, review, caption }) {
   return (
     <div className="rating">
       <span>
@@ -56,9 +56,14 @@ function Rating({ rating, review }) {
           }
         />
       </span>
-      <span className="float-end fw-bolder" style={{ color: "darkorange" }}>
+      {/* <span className="float-end fw-bolder" style={{ color: "darkorange" }}>
         {review} reviews
-      </span>
+      </span> */}
+      {caption ? (
+        <span className="">{caption}</span>
+      ) : (
+        <span className="float-end fw-bolder">{" " + review + " reviews"}</span>
+      )}
     </div>
   );
 }

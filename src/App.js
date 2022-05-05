@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./error-handler";
 import Navbar from "./components/nav-bar";
@@ -15,16 +15,54 @@ import PlaceOrderPage from "./pages/placeOrderPage";
 import OrderHistoryPage from "./pages/orderHistoryPage";
 import OrderPage from "./pages/orderPage";
 import ProfilePage from "./pages/profilePage";
-import { ToastContainer } from "react-toastify";
+import SearchPage from "./pages/searchPage";
+import { toast, ToastContainer } from "react-toastify";
+import { errorHandler } from "./script/error";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/categories`);
+        console.log(data);
+        setCategories(data);
+      } catch (err) {
+        toast.error(errorHandler(err));
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const toggleSideBar = async () => {
+    setSidebarIsOpen(!sidebarIsOpen);
+  };
+
+  const toggleSideBarFalse = async () => {
+    setSidebarIsOpen(false);
+  };
   return (
     <BrowserRouter>
-      <div className="d-flex flex-column" style={{ minHeight: "100vh" }}>
+      <div
+        style={{ minHeight: "100vh" }}
+        className={
+          sidebarIsOpen
+            ? "d-flex flex-column site-container active-cont"
+            : "d-flex flex-column site-container"
+        }
+      >
         <ToastContainer position="top-right" limit={1} />
         <ErrorBoundary>
-          <Navbar />
+          <Navbar
+            toggleSideBar={toggleSideBar}
+            categories={categories}
+            toggleSideBarFalse={toggleSideBarFalse}
+            sidebarIsOpen={sidebarIsOpen}
+          />
         </ErrorBoundary>
         <div className="container-fluid mt-5" style={{ flex: 1 }}>
           <Routes>
@@ -39,6 +77,7 @@ function App() {
             <Route path="/order/:id" element={<OrderPage />}></Route>
             <Route path="/orderhistory" element={<OrderHistoryPage />}></Route>
             <Route path="/products" element={<ProductPage />}></Route>
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

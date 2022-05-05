@@ -5,14 +5,21 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 // import FormControl from "react-bootstrap/FormControl";
 // import Form from "react-bootstrap/Form";
-// import Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
 // import { Search } from "react-bootstrap-icons";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import { Store } from "../store";
+import SearchBox from "./SearchBox";
 
-function NavBar() {
+function NavBar({
+  toggleSideBar,
+  sidebarIsOpen,
+  categories,
+  toggleSideBarFalse,
+}) {
+  console.log(categories);
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
@@ -84,7 +91,10 @@ function NavBar() {
         </Container>
       </Navbar> */}
       <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
-        <Container>
+        <Container fluid>
+          <Button variant="dark" onClick={toggleSideBar}>
+            <i className="bi bi-list"></i>
+          </Button>
           <LinkContainer to="/">
             <Navbar.Brand>Home</Navbar.Brand>
           </LinkContainer>
@@ -104,6 +114,7 @@ function NavBar() {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox />
             <Nav className="me-auto  w-100  justify-content-end">
               <Link to="/cart" className="nav-link">
                 Cart
@@ -139,6 +150,29 @@ function NavBar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div
+        className={
+          sidebarIsOpen
+            ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
+            : "side-navbar d-flex justify-content-between flex-wrap flex-column"
+        }
+      >
+        <Nav className="flex-column text-white w-100 p-2">
+          <Nav.Item>
+            <strong>Categories</strong>
+          </Nav.Item>
+          {categories.map((category) => (
+            <Nav.Item key={category}>
+              <LinkContainer
+                to={`/search?category=${category}`}
+                onClick={toggleSideBarFalse}
+              >
+                <Nav.Link className="text-muted">{category}</Nav.Link>
+              </LinkContainer>
+            </Nav.Item>
+          ))}
+        </Nav>
+      </div>
     </div>
   );
 }
