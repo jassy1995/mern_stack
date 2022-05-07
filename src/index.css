@@ -23,11 +23,7 @@ body {
   color: #f08000;
 }
 
-/* .site-container{
-  min-height: 100vh;
-} */
 
-.btn-primary,
 .btn-outline-primary {
   background-color: #f0c040;
   color: #000000;
@@ -60,4 +56,19 @@ body {
 }
 .text-bold {
   font-weight: bold;
+}
+
+.btn-color1{
+   background-color: #0096DB;
+  color: white;
+  margin-right: 4px;
+  width: 30px;
+}
+
+.btn-color2{
+  border:none;
+  outline: 1px solid gainsboro;
+  color: black;
+  margin-right: 4px;
+  width: 30px;
 }

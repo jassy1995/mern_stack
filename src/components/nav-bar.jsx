@@ -90,7 +90,7 @@ function NavBar({
           </Navbar.Collapse>
         </Container>
       </Navbar> */}
-      <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
+      <Navbar bg="dark" variant="dark" fixed="top" expand="md">
         <Container fluid>
           <Button variant="dark" onClick={toggleSideBar}>
             <i className="bi bi-list"></i>
@@ -145,6 +145,26 @@ function NavBar({
                 <Link className="nav-link" to="/signin">
                   Sign In
                 </Link>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown
+                  title="Admin"
+                  id="admin-nav-dropdown"
+                  className="me-5"
+                >
+                  <LinkContainer to="/admin/dashboard">
+                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/products">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orders">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/users">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>

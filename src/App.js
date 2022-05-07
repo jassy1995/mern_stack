@@ -16,10 +16,15 @@ import OrderHistoryPage from "./pages/orderHistoryPage";
 import OrderPage from "./pages/orderPage";
 import ProfilePage from "./pages/profilePage";
 import SearchPage from "./pages/searchPage";
+import AuthGuard from "./components/guards/auth-guard";
+import DashboardPage from "./pages/DashboardPage";
+import AdminGuard from "./components/guards/admin-guard";
 import { toast, ToastContainer } from "react-toastify";
 import { errorHandler } from "./script/error";
 import axios from "axios";
+import Footer from "./components/footer";
 import "react-toastify/dist/ReactToastify.css";
+import AdminProductPage from "./pages/adminProductPage";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -74,50 +79,54 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/payment" element={<PaymentMethodPage />}></Route>
             <Route path="/placeorder" element={<PlaceOrderPage />} />
-            <Route path="/order/:id" element={<OrderPage />}></Route>
-            <Route path="/orderhistory" element={<OrderHistoryPage />}></Route>
             <Route path="/products" element={<ProductPage />}></Route>
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route
+              path="/orderhistory"
+              element={
+                <AuthGuard>
+                  <OrderHistoryPage />
+                </AuthGuard>
+              }
+            ></Route>
+            <Route
+              path="/order/:id"
+              element={
+                <AuthGuard>
+                  <OrderPage />
+                </AuthGuard>
+              }
+            ></Route>
+            <Route
+              path="/profile"
+              element={
+                <AuthGuard>
+                  <ProfilePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminGuard>
+                  <DashboardPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
+              path="/admin/products"
+              element={
+                <AdminGuard>
+                  <AdminProductPage />
+                </AdminGuard>
+              }
+            ></Route>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>
-        <footer>
-          <div
-            className="text-center p-3  text-white"
-            style={{ backgroundColor: "#409EFF", marginTop: "10px" }}
-          >
-            All right reserved
-          </div>
-        </footer>
+        <Footer />
       </div>
     </BrowserRouter>
   );
 }
 export default App;
-
-//  <BrowserRouter>
-//    <Routes>
-//      <Route path="/" element={<Index />}>
-//        <Route index element={<DashboardPage users={customerRequest} />} />
-//        <Route path="skill" element={<SkillPage users={skills} />} />
-//        <Route
-//          path="unSkill"
-//          element={
-//            <UnSkillPage
-//              users={unSkills}
-//              pre_function={pre_function}
-//              next_function={next_function}
-//            />
-//          }
-//        />
-//        <Route path="artisan" element={<ArtisanPage users={artisans} />} />
-//        <Route
-//          path="customer"
-//          element={<CustomerRequestPage users={customerRequest} />}
-//        />
-//        <Route path="assign/:id" element={<AssignPage />} />
-//        <Route path="*" element={<NotFound />} />
-//      </Route>
-//    </Routes>
-//  </BrowserRouter>;

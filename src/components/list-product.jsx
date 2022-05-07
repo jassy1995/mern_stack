@@ -38,7 +38,11 @@ function ListProduct({ product }) {
           to={`/product/${product._id}`}
           className="text-center text-decoration-none"
         >
-          <Card.Title className="mb-2">{product.name}</Card.Title>
+          <Card.Title className="mb-2">
+            {product.name.length > 15
+              ? product.name.slice(0, 15).padEnd(18, ".")
+              : product.name}
+          </Card.Title>
         </Link>
         <Rating rating={product.rating} review={product.numReviews} />
         <Card.Text className="justify-content-evenly">

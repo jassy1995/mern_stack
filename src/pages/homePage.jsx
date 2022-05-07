@@ -12,7 +12,7 @@ import logger from "use-reducer-logger";
 import { Helmet } from "react-helmet-async";
 import { errorHandler } from "../script/error";
 
-function Home() {
+function HomePage() {
   const [{ loading, error, products }, dispatch] = useReducer(
     logger(productReducer),
     initialState
@@ -98,4 +98,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;

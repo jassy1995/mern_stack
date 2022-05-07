@@ -105,16 +105,18 @@ function ProductDetailPage() {
                   <Helmet>
                     <title>{product.name}</title>
                   </Helmet>
-                  <h3>{product.name}</h3>
+                  <h3>{product.name.split("/")[0]}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating rating={product.rating} review={product.numReviews} />
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  Price : {formatter(product.price)}
+                  <span className="text-bold">Price</span> :{" "}
+                  {formatter(product.price)}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  Description : <p>{product.description}</p>
+                  <span className="text-bold">Description</span> :{" "}
+                  <p>{product.description}</p>
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -124,13 +126,13 @@ function ProductDetailPage() {
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       <Row>
-                        <Col>Price :</Col>
+                        <Col className="text-bold">Price :</Col>
                         <Col>{formatter(product.price)}</Col>
                       </Row>
                     </ListGroup.Item>
                     <ListGroup.Item>
                       <Row>
-                        <Col>status:</Col>
+                        <Col className="text-bold">status:</Col>
                         <Col>
                           {product.count > 0 ? (
                             <Badge bg="success">In stock</Badge>
