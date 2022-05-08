@@ -90,7 +90,7 @@ function CartPage() {
                         onClick={() => removeItemHandler(item)}
                         variant="light"
                       >
-                        <i className="bi bi-trash-fill"></i>
+                        <i className="bi bi-trash2-fill"></i>
                       </Button>
                     </Col>
                   </Row>

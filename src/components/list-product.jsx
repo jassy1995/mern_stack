@@ -29,7 +29,7 @@ function ListProduct({ product }) {
     });
   };
   return (
-    <Card>
+    <Card className="h-100">
       <Link to={`/product/${product._id}`}>
         <Card.Img variant="top" src={product.image} alt={product.name} />
       </Link>

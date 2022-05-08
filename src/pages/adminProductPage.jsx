@@ -41,6 +41,12 @@ const reducer = (state, action) => {
       };
     case "CREATE_FAIL":
       return { ...state, loadingCreate: false };
+    case "UPDATE_REQUEST":
+      return { ...state, loadingUpdate: true };
+    case "UPDATE_SUCCESS":
+      return { ...state, loadingUpdate: false };
+    case "UPDATE_FAIL":
+      return { ...state, loadingUpdate: false };
 
     default:
       return state;
@@ -48,11 +54,13 @@ const reducer = (state, action) => {
 };
 
 function AdminProductPage() {
-  const [{ loading, error, products, pages, loadingCreate }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-    });
+  const [
+    { loading, error, products, pages, loadingCreate, loadingUpdate },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
 
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -63,7 +71,7 @@ function AdminProductPage() {
   const { userInfo } = state;
 
   const [selectedImage, setSelectedImage] = useState("");
-  const [refreshProduct, setRefreshProduct] = useState(false);
+  const [refreshProduct, setRefreshProduct] = useState("");
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [price, setPrice] = useState("");
@@ -71,8 +79,14 @@ function AdminProductPage() {
   const [brand, setBrand] = useState("");
   const [count, setCount] = useState("");
   const [description, setDescription] = useState("");
-  //  const [validated, setValidated] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [show, setShow] = useState(false);
+  const [selectedId, setSetSelectedId] = useState("");
+
   const formRef = useRef(null);
+
+  const handleClose = () => setShow(false);
+  const toggleShow = () => setShow((s) => !s);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,24 +116,77 @@ function AdminProductPage() {
     formData.append("brand", brand);
     formData.append("description", description);
     formData.append("image", selectedImage);
+    if (!isUpdating) {
+      try {
+        dispatch({ type: "CREATE_REQUEST" });
+        const { data } = await axios.post("/api/products", formData, {
+          "Content-Type": "multipart/form-data",
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success("product created successfully");
+        dispatch({ type: "CREATE_SUCCESS" });
+        // navigate(`/admin/product/${data.product._id}`);
+        setRefreshProduct("new product created successfully");
+        handleReset();
+      } catch (err) {
+        toast.error(errorHandler(err));
+        dispatch({
+          type: "CREATE_FAIL",
+        });
+      }
+    } else {
+      try {
+        dispatch({ type: "UPDATE_REQUEST" });
+        const { data } = await axios.put(
+          `/api/products/${selectedId}`,
+          formData,
+          {
+            "Content-Type": "multipart/form-data",
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
 
-    try {
-      dispatch({ type: "CREATE_REQUEST" });
-      const { data } = await axios.post("/api/products", formData, {
-        "Content-Type": "multipart/form-data",
-        headers: { authorization: `Bearer ${userInfo.token}` },
-      });
-      toast.success("product created successfully");
-      dispatch({ type: "CREATE_SUCCESS" });
-      // navigate(`/admin/product/${data.product._id}`);
-      setRefreshProduct(true);
-      handleReset();
-    } catch (err) {
-      toast.error(errorHandler(err));
-      dispatch({
-        type: "CREATE_FAIL",
-      });
+        toast.success("product updated successfully");
+        dispatch({ type: "UPDATE_SUCCESS" });
+        // navigate(`/admin/product/${data.product._id}`);
+        setRefreshProduct("product updated successfully");
+        //  handleReset();
+      } catch (err) {
+        toast.error(errorHandler(err));
+        dispatch({
+          type: "UPDATE_FAIL",
+        });
+      }
     }
+  };
+
+  const handleUpdate = async (data) => {
+    // console.log(data);
+    // console.log(data.name);
+    // try {
+    // dispatch({ type: "UPDATE_REQUEST" });
+    //  const { data } = await axios.get(`/api/products/${productId}`);
+    toggleShow();
+    setName(data.name);
+    setSlug(data.slug);
+    setPrice(data.price);
+    setSelectedImage(data.image);
+    setCategory(data.category);
+    setCount(data.count);
+    setBrand(data.brand);
+    setDescription(data.description);
+    setSetSelectedId(data._id);
+    setIsUpdating(true);
+    console.log(selectedImage);
+
+    // dispatch({ type: "UPDATE_SUCCESS" });
+    // }
+    // catch (err) {
+    //   dispatch({
+    //     type: "UPDATE_FAIL",
+    //     payload: errorHandler(err),
+    //   });
+    // }
   };
 
   return (
@@ -130,24 +197,33 @@ function AdminProductPage() {
         </Col>
         <Col className="text-end">
           <Modal
-            name="create new product"
+            btnText="create new product"
             placement="end"
             title="fill in the form below to create new product"
-            Name={(e) => setName(e.target.value)}
-            slug={(e) => setSlug(e.target.value)}
-            price={(e) => setPrice(e.target.value)}
-            count={(e) => setCount(e.target.value)}
-            category={(e) => setCategory(e.target.value)}
-            description={(e) => setDescription(e.target.value)}
-            brand={(e) => setBrand(e.target.value)}
+            changeName={(e) => setName(e.target.value)}
+            changeSlug={(e) => setSlug(e.target.value)}
+            changePrice={(e) => setPrice(e.target.value)}
+            changeCount={(e) => setCount(e.target.value)}
+            changeCategory={(e) => setCategory(e.target.value)}
+            changeDescription={(e) => setDescription(e.target.value)}
+            changeBrand={(e) => setBrand(e.target.value)}
             submitHandler={submitHandler}
-            inputValue={
-              (name, slug, price, count, category, brand, description)
-            }
+            name={name}
+            slug={slug}
+            price={price}
+            count={count}
+            category={category}
+            brand={brand}
+            description={description}
             fileOnchange={(e) => setSelectedImage(e.target.files[0])}
-            image={selectedImage}
+            selectedImage={selectedImage}
             loadingCreate={loadingCreate}
             formRef={formRef}
+            handleClose={handleClose}
+            toggleShow={toggleShow}
+            show={show}
+            loadingUpdate={loadingUpdate}
+            submitBtnText={isUpdating ? "Update" : "Create"}
           />
         </Col>
       </Row>
@@ -166,6 +242,8 @@ function AdminProductPage() {
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
               </tr>
             </thead>
             <tbody>
@@ -176,6 +254,15 @@ function AdminProductPage() {
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
+                  <td
+                    className="text-success"
+                    onClick={() => handleUpdate(product)}
+                  >
+                    <i className="bi bi-pencil-square"></i>
+                  </td>
+                  <td className="text-danger">
+                    <i className="bi bi-trash2-fill"></i>
+                  </td>
                 </tr>
               ))}
             </tbody>

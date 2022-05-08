@@ -12,32 +12,38 @@ import FetchingSpinner from "./spinner";
 function Modal({
   name,
   title,
-  handleChange,
-  submitHandler,
-  inputValue,
-  fileOnchange,
-  selectedImage,
-  loadingCreate,
+  btnText,
   brand,
   category,
   count,
   price,
   description,
-  Name,
   slug,
+  changeName,
+  changeDescription,
+  changePrice,
+  changeCategory,
+  changeBrand,
+  changeSlug,
+  changeCount,
+  handleChange,
+  submitHandler,
+  fileOnchange,
+  selectedImage,
+  loadingCreate,
   formRef,
+  toggleShow,
+  handleClose,
+  show,
+  loadingUpdate,
+  submitBtnText,
 
   ...props
 }) {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const toggleShow = () => setShow((s) => !s);
-
   return (
     <>
       <Button variant="primary" onClick={toggleShow} className="me-2">
-        {name}
+        {btnText}
       </Button>
       <Offcanvas
         show={show}
@@ -47,13 +53,19 @@ function Modal({
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title className="fs-4 font-bolder text-muted">
-            {!loadingCreate && title}
+            {!loadingCreate && loadingUpdate && title}
           </Offcanvas.Title>
           <div className="d-flex justify-content-space font-bolder text-bold">
             {loadingCreate && (
               <>
                 <FetchingSpinner />
                 <div className="text-success"> Creating...</div>
+              </>
+            )}
+            {loadingUpdate && (
+              <>
+                <FetchingSpinner />
+                <div className="text-success"> Updating...</div>
               </>
             )}
           </div>
@@ -64,20 +76,12 @@ function Modal({
               <Row className="mb-5">
                 <Form.Group as={Col} controlId="name">
                   <Form.Label className="text-muted">Product Name</Form.Label>
-                  <Form.Control
-                    value={inputValue.name}
-                    onChange={Name}
-                    required
-                  />
+                  <Form.Control value={name} onChange={changeName} required />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="slug">
                   <Form.Label className="text-muted">Slug</Form.Label>
-                  <Form.Control
-                    value={inputValue.slug}
-                    onChange={slug}
-                    required
-                  />
+                  <Form.Control value={slug} onChange={changeSlug} required />
                 </Form.Group>
               </Row>
               <Row className="mb-5">
@@ -85,18 +89,18 @@ function Modal({
                   <Form.Label className="text-muted">Price</Form.Label>
                   <Form.Control
                     type="number"
-                    value={inputValue.price}
+                    value={price}
                     required
-                    onChange={price}
+                    onChange={changePrice}
                   />
                 </Form.Group>
                 <Form.Group as={Col} controlId="count">
                   <Form.Label className="text-muted">Quantity</Form.Label>
                   <Form.Control
                     type="number"
-                    value={inputValue.count}
+                    value={count}
                     required
-                    onChange={count}
+                    onChange={changeCount}
                   />
                 </Form.Group>
               </Row>
@@ -104,12 +108,8 @@ function Modal({
               <Row className="mb-5">
                 <Form.Group as={Col} controlId="brand">
                   <Form.Label className="text-muted">Brand</Form.Label>
-                  <Form.Select
-                    defaultValue={inputValue.brand}
-                    value={inputValue.brand}
-                    onChange={brand}
-                  >
-                    <option>Choose brand...</option>
+                  <Form.Select value={brand} onChange={changeBrand}>
+                    {/* <option>Choose brand...</option> */}
                     <option value="nike">Nike</option>
                     <option value="puma">Puma</option>
                     <option value="adidas">Adidas</option>
@@ -118,12 +118,8 @@ function Modal({
                 </Form.Group>
                 <Form.Group as={Col} controlId="category">
                   <Form.Label className="text-muted">Category</Form.Label>
-                  <Form.Select
-                    defaultValue={inputValue.category}
-                    value={inputValue.category}
-                    onChange={category}
-                  >
-                    <option>Choose category...</option>
+                  <Form.Select value={category} onChange={changeCategory}>
+                    {/* <option>Choose category...</option> */}
                     <option value="pants">Pant</option>
                     <option value="shirts">Shirt</option>
                     <option value="jackets">Jacket</option>
@@ -138,8 +134,7 @@ function Modal({
                 </Form.Label>
                 <Form.Control
                   type="file"
-                  // name={image}
-                  value={selectedImage}
+                  // value={selectedImage}
                   onChange={fileOnchange}
                 />
               </Form.Group>
@@ -148,10 +143,10 @@ function Modal({
                   describe your product
                 </Form.Label>
                 <Form.Control
-                  value={inputValue.description}
+                  value={description}
                   as="textarea"
                   rows={3}
-                  onChange={description}
+                  onChange={changeDescription}
                 />
               </Form.Group>
 
@@ -162,7 +157,7 @@ function Modal({
                   disabled={loadingCreate}
                   style={{ height: "50px" }}
                 >
-                  Create
+                  {submitBtnText}
                 </Button>
               </div>
               {/* <div className="mb-3">
