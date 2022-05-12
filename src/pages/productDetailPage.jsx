@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { productReducer, initialState } from "../api/reducers";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -25,6 +24,7 @@ import { errorHandler } from "../script/error";
 import { Store } from "../store.js";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { toast } from "react-toastify";
+import http from "../lib/http";
 
 function ProductDetailPage() {
   const styleLoader = {
@@ -57,7 +57,7 @@ function ProductDetailPage() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/products/${id}`);
+        const result = await http.get(`/api/products/${id}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
         dispatch({ type: "FETCH_FAIL", payload: errorHandler(error) });
@@ -71,7 +71,7 @@ function ProductDetailPage() {
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const qty = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    const { data } = await http.get(`/api/products/${product._id}`);
 
     if (data.count < qty) {
       window.alert("Sorry, product is out of stock");
@@ -91,13 +91,11 @@ function ProductDetailPage() {
       return;
     }
     try {
-      const { data } = await axios.post(
-        `/api/products/${product._id}/reviews`,
-        { rating, comment, name: userInfo.name },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await http.post(`/api/products/${product._id}/reviews`, {
+        rating,
+        comment,
+        name: userInfo.name,
+      });
 
       dispatch({
         type: "CREATE_SUCCESS",

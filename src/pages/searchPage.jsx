@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { errorHandler } from "../script/error";
 import { Helmet } from "react-helmet-async";
@@ -12,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import ListProduct from "../components/list-product";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
 import FetchingSpinner from "../components/spinner";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,7 +91,7 @@ function SearchPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await http.get(
           `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: "FETCH_SUCCESS", payload: data });
@@ -109,7 +109,7 @@ function SearchPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const { data } = await http.get(`/api/products/categories`);
         setCategories(data);
       } catch (err) {
         toast.error(errorHandler(err));

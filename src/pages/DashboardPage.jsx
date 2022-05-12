@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import Chart from "react-google-charts";
-import axios from "axios";
 import { Store } from "../store";
 import { errorHandler } from "../script/error";
 import MessageBox from "../components/message-box";
@@ -9,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import FetchingSpinner from "../components/spinner";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,7 +47,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get("/api/orders/summary", {
+        const { data } = await http.get("/api/orders/summary", {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });

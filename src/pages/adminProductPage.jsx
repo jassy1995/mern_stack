@@ -5,7 +5,6 @@ import React, {
   useState,
   useRef,
 } from "react";
-import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { Store } from "../store";
 import FetchingSpinner from "../components/spinner";
@@ -17,6 +16,7 @@ import Table from "react-bootstrap/Table";
 import Modal from "../components/modal";
 import { toast } from "react-toastify";
 import { errorHandler } from "../script/error";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -125,9 +125,7 @@ function AdminProductPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/admin?page=${page}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await http.get(`/api/products/admin?page=${page}`);
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -145,9 +143,7 @@ function AdminProductPage() {
     if (window.confirm("Are you sure to delete?")) {
       dispatch({ type: "DELETE_REQUEST" });
       try {
-        await axios.delete(`/api/products/${product._id}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        await http.delete(`/api/products/${product._id}`);
         dispatch({ type: "DELETE_SUCCESS" });
         toast.success("product deleted successfully");
         setRefreshProduct("product deleted successfully");
@@ -175,10 +171,7 @@ function AdminProductPage() {
     if (!isUpdating) {
       try {
         dispatch({ type: "CREATE_REQUEST" });
-        await axios.post("/api/products", formData, {
-          "Content-Type": "multipart/form-data",
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        await http.post("/api/products", formData);
         dispatch({ type: "CREATE_SUCCESS" });
         setRefreshProduct("new product created successfully");
         toast.success("product created successfully");
@@ -193,10 +186,7 @@ function AdminProductPage() {
     } else {
       try {
         dispatch({ type: "UPDATE_REQUEST" });
-        await axios.put(`/api/products/${selectedId}`, formData, {
-          "Content-Type": "multipart/form-data",
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        await http.put(`/api/products/${selectedId}`, formData);
 
         toast.success("product updated successfully");
         dispatch({ type: "UPDATE_SUCCESS" });

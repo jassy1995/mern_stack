@@ -10,6 +10,7 @@ import { errorHandler } from "../script/error";
 import Table from "react-bootstrap/Table";
 import Container from "react-bootstrap/Container";
 import { toast } from "react-toastify";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,9 +54,7 @@ function OrderListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/orders`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await http.get(`/api/orders`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
@@ -88,9 +87,7 @@ function OrderListPage() {
     if (window.confirm("Are you sure to delete?")) {
       try {
         dispatch({ type: "DELETE_REQUEST" });
-        await axios.delete(`/api/orders/${order._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        await http.delete(`/api/orders/${order._id}`);
         toast.success("order deleted successfully");
         dispatch({ type: "DELETE_SUCCESS" });
       } catch (err) {

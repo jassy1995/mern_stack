@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet-async";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FetchingSpinner from "../components/spinner";
 import MessageBox from "../components/message-box";
 import { Store } from "../store";
 import { errorHandler } from "../script/error";
 import Button from "react-bootstrap/Button";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -34,11 +34,7 @@ function OrderHistoryPage() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await axios.get(
-          `/api/orders/mine`,
-
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
-        );
+        const { data } = await http.get(`/api/orders/mine`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({

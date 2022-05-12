@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useContext, useEffect, useReducer } from "react";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { usePaystackPayment } from "react-paystack";
@@ -16,6 +15,7 @@ import { Store } from "../store";
 import { formatter } from "../script/formatter";
 import { errorHandler } from "../script/error";
 import { toast } from "react-toastify";
+import http from "../lib/http";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -98,12 +98,9 @@ function OrderPage() {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: "PAY_REQUEST" });
-        const { data } = await axios.put(
+        const { data } = await http.put(
           `/api/orders/${order._id}/pay`,
-          details,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
+          details
         );
         dispatch({ type: "PAY_SUCCESS", payload: data });
         toast.success("Order is paid");
@@ -120,9 +117,7 @@ function OrderPage() {
     const fetchOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await http.get(`/api/orders/${orderId}`);
         setAmount(data.totalPrice);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -148,9 +143,7 @@ function OrderPage() {
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get("/api/keys/paypal", {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data: clientId } = await http.get("/api/keys/paypal");
         console.log(clientId);
         paypalDispatch({
           type: "resetOptions",
@@ -175,13 +168,7 @@ function OrderPage() {
   async function deliverOrderHandler() {
     try {
       dispatch({ type: "DELIVER_REQUEST" });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/deliver`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await http.put(`/api/orders/${order._id}/deliver`);
       dispatch({ type: "DELIVER_SUCCESS", payload: data });
       toast.success("Order is delivered");
     } catch (err) {
@@ -203,13 +190,7 @@ function OrderPage() {
     console.log(config.amount);
     try {
       dispatch({ type: "PAY_REQUEST" });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/pay`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await http.put(`/api/orders/${order._id}/pay`, {});
       dispatch({ type: "PAY_SUCCESS", payload: data });
       toast.success("Order is paid");
     } catch (err) {

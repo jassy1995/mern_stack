@@ -4,8 +4,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Store } from "../store";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { errorHandler } from "../script/error";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -36,17 +36,11 @@ function ProfilePage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(
-        "/api/users/profile",
-        {
-          name,
-          email,
-          password,
-        },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await http.put("/api/users/profile", {
+        name,
+        email,
+        password,
+      });
       dispatch({
         type: "UPDATE_SUCCESS",
       });

@@ -22,13 +22,13 @@ import DashboardPage from "./pages/DashboardPage";
 import AdminGuard from "./components/guards/admin-guard";
 import { toast, ToastContainer } from "react-toastify";
 import { errorHandler } from "./script/error";
-import axios from "axios";
 import Footer from "./components/footer";
 import "react-toastify/dist/ReactToastify.css";
 import AdminProductPage from "./pages/adminProductPage";
 import OrderListPage from "./pages/orderListPage";
 import UserListPage from "./pages/userListPage";
 import MapPage from "./pages/mapPage";
+import http from "./lib/http";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const { data } = await http.get(`/api/products/categories`);
         setCategories(data);
       } catch (err) {
         toast.error(errorHandler(err));

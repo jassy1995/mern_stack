@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import MessageBox from "../components/message-box";
@@ -11,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Table";
 import { toast } from "react-toastify";
 import EditModal from "../components/user-edit-modal";
+import http from "../lib/http";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -87,9 +87,7 @@ function UserListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/users`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await http.get(`/api/users`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
@@ -105,13 +103,11 @@ function UserListPage() {
     e.preventDefault();
     try {
       dispatch({ type: "UPDATE_REQUEST" });
-      const { data } = await axios.put(
-        `/api/users/${selectedId}`,
-        { name, email, isAdmin: checked },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await http.put(`/api/users/${selectedId}`, {
+        name,
+        email,
+        isAdmin: checked,
+      });
       dispatch({
         type: "UPDATE_SUCCESS",
         payload: data.user,
@@ -148,9 +144,7 @@ function UserListPage() {
     if (window.confirm("Are you sure to delete?")) {
       dispatch({ type: "DELETE_REQUEST" });
       try {
-        await axios.delete(`/api/users/${user._id}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        await http.delete(`/api/users/${user._id}`);
         dispatch({ type: "DELETE_SUCCESS", payload: user });
         toast.success("user deleted successfully");
       } catch (err) {

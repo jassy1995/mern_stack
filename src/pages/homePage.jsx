@@ -5,10 +5,10 @@ import ListProduct from "../components/list-product";
 import { productReducer, initialState } from "../api/reducers";
 import FetchingSpinner from "../components/spinner";
 import MessageBox from "../components/message-box";
-import axios from "axios";
 import logger from "use-reducer-logger";
 import { Helmet } from "react-helmet-async";
 import { errorHandler } from "../script/error";
+import http from "../lib/http";
 
 function HomePage() {
   const [{ loading, error, products }, dispatch] = useReducer(
@@ -33,7 +33,7 @@ function HomePage() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/products");
+        const result = await http.get("/api/products");
 
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {

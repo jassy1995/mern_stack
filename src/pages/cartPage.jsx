@@ -9,8 +9,8 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { formatter } from "../script/formatter";
+import http from "../lib/http";
 
 function CartPage() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function CartPage() {
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
+    const { data } = await http.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert("Sorry. Product is out of stock");
       return;

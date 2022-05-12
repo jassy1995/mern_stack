@@ -22,7 +22,7 @@ function PlaceOrderPage() {
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { cart } = state;
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
@@ -36,23 +36,15 @@ function PlaceOrderPage() {
     try {
       dispatch({ type: "CREATE_REQUEST" });
       console.log(cart.cartItems);
-      const { data } = await axios.post(
-        "/api/orders",
-        {
-          orderItems: cart.cartItems,
-          shippingAddress: cart.shippingAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          taxPrice: cart.taxPrice,
-          totalPrice: cart.totalPrice,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const { data } = await axios.post("/api/orders", {
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      });
       ctxDispatch({ type: "CART_CLEAR" });
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
