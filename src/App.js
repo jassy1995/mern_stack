@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ErrorBoundary from "./error-handler";
+
 import Navbar from "./components/nav-bar";
 import HomePage from "./pages/homePage";
 import ProductPage from "./pages/productPage";
@@ -73,98 +73,94 @@ function App() {
         }
       >
         <ToastContainer position="top-right" limit={1} />
-        <ErrorBoundary>
-          <Navbar
-            toggleSideBar={toggleSideBar}
-            categories={categories}
-            toggleSideBarFalse={toggleSideBarFalse}
-            sidebarIsOpen={sidebarIsOpen}
-          />
 
-          <div className="container-fluid mt-5" style={{ flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<HomePage />}></Route>
-              <Route
-                path="/product/:id"
-                element={<ProductDetailPage />}
-              ></Route>
-              <Route path="/cart" element={<CartPage />}></Route>
-              <Route path="/signin" element={<SignInPage />} />
-              <Route path="/shipping" element={<ShippingAddressPage />}></Route>
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/payment" element={<PaymentMethodPage />}></Route>
-              <Route path="/placeorder" element={<PlaceOrderPage />} />
-              <Route path="/products" element={<ProductPage />}></Route>
-              <Route path="/search" element={<SearchPage />} />
-              <Route
-                path="/map"
-                element={
-                  <AuthGuard>
-                    <MapPage />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/orderhistory"
-                element={
-                  <AuthGuard>
-                    <OrderHistoryPage />
-                  </AuthGuard>
-                }
-              ></Route>
-              <Route
-                path="/order/:id"
-                element={
-                  <AuthGuard>
-                    <OrderPage />
-                  </AuthGuard>
-                }
-              ></Route>
-              <Route
-                path="/profile"
-                element={
-                  <AuthGuard>
-                    <ProfilePage />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminGuard>
-                    <DashboardPage />
-                  </AdminGuard>
-                }
-              ></Route>
-              <Route
-                path="/admin/users"
-                element={
-                  <AdminGuard>
-                    <UserListPage />
-                  </AdminGuard>
-                }
-              ></Route>
-              <Route
-                path="/admin/products"
-                element={
-                  <AdminGuard>
-                    <AdminProductPage />
-                  </AdminGuard>
-                }
-              ></Route>
-              <Route
-                path="/admin/orders"
-                element={
-                  <AdminGuard>
-                    <OrderListPage />
-                  </AdminGuard>
-                }
-              ></Route>
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </div>
-          <Footer />
-        </ErrorBoundary>
+        <Navbar
+          toggleSideBar={toggleSideBar}
+          categories={categories}
+          toggleSideBarFalse={toggleSideBarFalse}
+          sidebarIsOpen={sidebarIsOpen}
+        />
+
+        <div className="container-fluid mt-5" style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<HomePage />}></Route>
+            <Route path="/product/:id" element={<ProductDetailPage />}></Route>
+            <Route path="/cart" element={<CartPage />}></Route>
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/payment" element={<PaymentMethodPage />}></Route>
+            <Route path="/placeorder" element={<PlaceOrderPage />} />
+            <Route path="/products" element={<ProductPage />}></Route>
+            <Route path="/search" element={<SearchPage />} />
+            <Route
+              path="/map"
+              element={
+                <AuthGuard>
+                  <MapPage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/orderhistory"
+              element={
+                <AuthGuard>
+                  <OrderHistoryPage />
+                </AuthGuard>
+              }
+            ></Route>
+            <Route
+              path="/order/:id"
+              element={
+                <AuthGuard>
+                  <OrderPage />
+                </AuthGuard>
+              }
+            ></Route>
+            <Route
+              path="/profile"
+              element={
+                <AuthGuard>
+                  <ProfilePage />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminGuard>
+                  <DashboardPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
+              path="/admin/users"
+              element={
+                <AdminGuard>
+                  <UserListPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
+              path="/admin/products"
+              element={
+                <AdminGuard>
+                  <AdminProductPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
+              path="/admin/orders"
+              element={
+                <AdminGuard>
+                  <OrderListPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </BrowserRouter>
   );
