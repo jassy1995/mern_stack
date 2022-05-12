@@ -49,6 +49,19 @@ function OrderHistoryPage() {
     };
     fetchData();
   }, [userInfo]);
+
+  const styleLoader = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    position: "fixed",
+    left: "0px",
+    top: "80px",
+    width: "100%",
+    height: "70%",
+  };
   return (
     <div>
       <Helmet>
@@ -60,6 +73,13 @@ function OrderHistoryPage() {
         <FetchingSpinner></FetchingSpinner>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
+      ) : !loading && orders.length === 0 ? (
+        <div style={styleLoader} className="fs-4">
+          <div>
+            <i className="bi bi-exclamation-circle fs-3"></i>
+          </div>
+          <div className="pl-4 ml-4">No Order</div>
+        </div>
       ) : (
         <table className="table">
           <thead>

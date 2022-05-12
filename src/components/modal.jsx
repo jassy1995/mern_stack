@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import InputGroup from "react-bootstrap/InputGroup";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Container } from "react-bootstrap";
 import FetchingSpinner from "./spinner";
@@ -108,8 +106,8 @@ function Modal({
               <Row className="mb-5">
                 <Form.Group as={Col} controlId="brand">
                   <Form.Label className="text-muted">Brand</Form.Label>
-                  <Form.Select value={brand} onChange={changeBrand}>
-                    {/* <option>Choose brand...</option> */}
+                  <Form.Select value={brand} onChange={changeBrand} required>
+                    <option>Choose brand...</option>
                     <option value="nike">Nike</option>
                     <option value="puma">Puma</option>
                     <option value="adidas">Adidas</option>
@@ -118,8 +116,12 @@ function Modal({
                 </Form.Group>
                 <Form.Group as={Col} controlId="category">
                   <Form.Label className="text-muted">Category</Form.Label>
-                  <Form.Select value={category} onChange={changeCategory}>
-                    {/* <option>Choose category...</option> */}
+                  <Form.Select
+                    value={category}
+                    onChange={changeCategory}
+                    required
+                  >
+                    <option>Choose category...</option>
                     <option value="pants">Pant</option>
                     <option value="shirts">Shirt</option>
                     <option value="jackets">Jacket</option>
@@ -160,10 +162,6 @@ function Modal({
                   {submitBtnText}
                 </Button>
               </div>
-              {/* <div className="mb-3">
-              Already have an account?{" "}
-              <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
-            </div> */}
             </Form>
           </Container>
         </Offcanvas.Body>

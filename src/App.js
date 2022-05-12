@@ -6,6 +6,7 @@ import HomePage from "./pages/homePage";
 import ProductPage from "./pages/productPage";
 import ProductDetailPage from "./pages/productDetailPage";
 import NotFoundPage from "./pages/notFoundPage";
+import { Store } from "./store";
 import CartPage from "./pages/cartPage";
 import SignInPage from "./pages/signInPage";
 import ShippingAddressPage from "./pages/shippingAddressPage";
@@ -25,10 +26,16 @@ import axios from "axios";
 import Footer from "./components/footer";
 import "react-toastify/dist/ReactToastify.css";
 import AdminProductPage from "./pages/adminProductPage";
+import OrderListPage from "./pages/orderListPage";
+import UserListPage from "./pages/userListPage";
+import MapPage from "./pages/mapPage";
 
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { fullBox, cart, userInfo } = state;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,19 +63,23 @@ function App() {
         style={{ minHeight: "100vh" }}
         className={
           sidebarIsOpen
-            ? "d-flex flex-column site-container active-cont"
-            : "d-flex flex-column site-container"
+            ? fullBox
+              ? "site-container active-cont d-flex flex-column full-box"
+              : "site-container active-cont d-flex flex-column"
+            : fullBox
+            ? "site-container d-flex flex-column full-box"
+            : "site-container d-flex flex-column"
         }
       >
         <ToastContainer position="top-right" limit={1} />
-        <ErrorBoundary>
-          <Navbar
-            toggleSideBar={toggleSideBar}
-            categories={categories}
-            toggleSideBarFalse={toggleSideBarFalse}
-            sidebarIsOpen={sidebarIsOpen}
-          />
-        </ErrorBoundary>
+        {/* <ErrorBoundary> */}
+        <Navbar
+          toggleSideBar={toggleSideBar}
+          categories={categories}
+          toggleSideBarFalse={toggleSideBarFalse}
+          sidebarIsOpen={sidebarIsOpen}
+        />
+        {/* </ErrorBoundary> */}
         <div className="container-fluid mt-5" style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<HomePage />}></Route>
@@ -81,6 +92,14 @@ function App() {
             <Route path="/placeorder" element={<PlaceOrderPage />} />
             <Route path="/products" element={<ProductPage />}></Route>
             <Route path="/search" element={<SearchPage />} />
+            <Route
+              path="/map"
+              element={
+                <AuthGuard>
+                  <MapPage />
+                </AuthGuard>
+              }
+            />
             <Route
               path="/orderhistory"
               element={
@@ -114,10 +133,26 @@ function App() {
               }
             ></Route>
             <Route
+              path="/admin/users"
+              element={
+                <AdminGuard>
+                  <UserListPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
               path="/admin/products"
               element={
                 <AdminGuard>
                   <AdminProductPage />
+                </AdminGuard>
+              }
+            ></Route>
+            <Route
+              path="/admin/orders"
+              element={
+                <AdminGuard>
+                  <OrderListPage />
                 </AdminGuard>
               }
             ></Route>

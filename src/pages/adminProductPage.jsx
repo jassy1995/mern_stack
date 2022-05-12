@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from "react";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Store } from "../store";
 import FetchingSpinner from "../components/spinner";
 import MessageBox from "../components/message-box";
@@ -47,6 +47,19 @@ const reducer = (state, action) => {
       return { ...state, loadingUpdate: false };
     case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false };
+    case "DELETE_REQUEST":
+      return { ...state, loadingDelete: true, successDelete: false };
+    case "DELETE_SUCCESS":
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: true,
+      };
+    case "DELETE_FAIL":
+      return { ...state, loadingDelete: false, successDelete: false };
+
+    case "DELETE_RESET":
+      return { ...state, loadingDelete: false, successDelete: false };
 
     default:
       return state;
@@ -55,14 +68,35 @@ const reducer = (state, action) => {
 
 function AdminProductPage() {
   const [
-    { loading, error, products, pages, loadingCreate, loadingUpdate },
+    {
+      loading,
+      error,
+      products,
+      pages,
+      loadingCreate,
+      loadingUpdate,
+      loadingDelete,
+    },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
+    loadingDelete: false,
     error: "",
   });
 
-  const navigate = useNavigate();
+  const styleLoader = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    position: "fixed",
+    left: "0px",
+    top: "80px",
+    width: "100%",
+    height: "70%",
+  };
+
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const page = sp.get("page") || 1;
@@ -91,18 +125,39 @@ function AdminProductPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/admin?page=${page} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+        const { data } = await axios.get(`/api/products/admin?page=${page}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
         });
 
         dispatch({ type: "FETCH_SUCCESS", payload: data });
-      } catch (err) {}
+      } catch (err) {
+        toast.error(errorHandler(err));
+      }
     };
     fetchData();
   }, [page, userInfo, refreshProduct]);
 
   const handleReset = () => {
     formRef.current.reset();
+  };
+
+  const deleteHandler = async (product) => {
+    if (window.confirm("Are you sure to delete?")) {
+      dispatch({ type: "DELETE_REQUEST" });
+      try {
+        await axios.delete(`/api/products/${product._id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: "DELETE_SUCCESS" });
+        toast.success("product deleted successfully");
+        setRefreshProduct("product deleted successfully");
+      } catch (err) {
+        toast.error(errorHandler(err));
+        dispatch({
+          type: "DELETE_FAIL",
+        });
+      }
+    }
   };
 
   const submitHandler = async (e) => {
@@ -119,15 +174,15 @@ function AdminProductPage() {
     if (!isUpdating) {
       try {
         dispatch({ type: "CREATE_REQUEST" });
-        const { data } = await axios.post("/api/products", formData, {
+        await axios.post("/api/products", formData, {
           "Content-Type": "multipart/form-data",
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        toast.success("product created successfully");
         dispatch({ type: "CREATE_SUCCESS" });
-        // navigate(`/admin/product/${data.product._id}`);
         setRefreshProduct("new product created successfully");
+        toast.success("product created successfully");
         handleReset();
+        // navigate(`/admin/product/${data.product._id}`);
       } catch (err) {
         toast.error(errorHandler(err));
         dispatch({
@@ -137,20 +192,14 @@ function AdminProductPage() {
     } else {
       try {
         dispatch({ type: "UPDATE_REQUEST" });
-        const { data } = await axios.put(
-          `/api/products/${selectedId}`,
-          formData,
-          {
-            "Content-Type": "multipart/form-data",
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+        await axios.put(`/api/products/${selectedId}`, formData, {
+          "Content-Type": "multipart/form-data",
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
 
         toast.success("product updated successfully");
         dispatch({ type: "UPDATE_SUCCESS" });
-        // navigate(`/admin/product/${data.product._id}`);
         setRefreshProduct("product updated successfully");
-        //  handleReset();
       } catch (err) {
         toast.error(errorHandler(err));
         dispatch({
@@ -161,12 +210,6 @@ function AdminProductPage() {
   };
 
   const handleUpdate = async (data) => {
-    // console.log(data);
-    // console.log(data.name);
-    // try {
-    // dispatch({ type: "UPDATE_REQUEST" });
-    //  const { data } = await axios.get(`/api/products/${productId}`);
-    toggleShow();
     setName(data.name);
     setSlug(data.slug);
     setPrice(data.price);
@@ -177,16 +220,6 @@ function AdminProductPage() {
     setDescription(data.description);
     setSetSelectedId(data._id);
     setIsUpdating(true);
-    console.log(selectedImage);
-
-    // dispatch({ type: "UPDATE_SUCCESS" });
-    // }
-    // catch (err) {
-    //   dispatch({
-    //     type: "UPDATE_FAIL",
-    //     payload: errorHandler(err),
-    //   });
-    // }
   };
 
   return (
@@ -195,6 +228,15 @@ function AdminProductPage() {
         <Col>
           <h1>Products</h1>
         </Col>
+        <Col>
+          {loadingDelete && (
+            <>
+              <FetchingSpinner />
+              <div className="text-danger"> Deleting...</div>
+            </>
+          )}
+        </Col>
+
         <Col className="text-end">
           <Modal
             btnText="create new product"
@@ -229,9 +271,19 @@ function AdminProductPage() {
       </Row>
 
       {loading ? (
-        <FetchingSpinner></FetchingSpinner>
+        <div style={styleLoader} className="fs-3">
+          <FetchingSpinner />
+          <div className="pl-4 ml-4"> fetching...</div>
+        </div>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
+      ) : !loading && products.length === 0 ? (
+        <div style={styleLoader} className="fs-4">
+          <div>
+            <i className="bi bi-exclamation-circle fs-3"></i>
+          </div>
+          <div className="pl-4 ml-4">No Product</div>
+        </div>
       ) : (
         <>
           <Table responsive="sm">
@@ -260,8 +312,11 @@ function AdminProductPage() {
                   >
                     <i className="bi bi-pencil-square"></i>
                   </td>
-                  <td className="text-danger">
-                    <i className="bi bi-trash2-fill"></i>
+                  <td className="text-danger" style={{ cursor: "pointer" }}>
+                    <i
+                      onClick={() => deleteHandler(product)}
+                      className="bi bi-trash2-fill"
+                    ></i>
                   </td>
                 </tr>
               ))}

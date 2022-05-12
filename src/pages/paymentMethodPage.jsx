@@ -14,7 +14,7 @@ function PaymentMethodPage() {
   } = state;
 
   const [paymentMethodName, setPaymentMethod] = useState(
-    paymentMethod || "PayPal"
+    paymentMethod || "PayStack"
   );
 
   useEffect(() => {
@@ -50,10 +50,10 @@ function PaymentMethodPage() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={paymentMethodName === "Stripe"}
+              id="PayStack"
+              label="PayStack"
+              value="PayStack"
+              checked={paymentMethodName === "PayStack"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

@@ -61,11 +61,27 @@ export default function DashboardPage() {
     fetchData();
   }, [userInfo]);
 
+  const styleLoader = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    position: "fixed",
+    left: "0px",
+    top: "80px",
+    width: "100%",
+    height: "70%",
+  };
+
   return (
     <Container>
       <h1>Dashboard</h1>
       {loading ? (
-        <FetchingSpinner />
+        <div style={styleLoader} className="fs-3">
+          <FetchingSpinner />
+          <div className="pl-4 ml-4"> fetching...</div>
+        </div>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (

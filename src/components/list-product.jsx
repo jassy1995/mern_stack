@@ -1,9 +1,7 @@
-// import React, { useState, useEffect } from "react";
 import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { formatter } from "../script/formatter";
-// import { Star } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import Rating from "./rating";
 import axios from "axios";
@@ -49,13 +47,6 @@ function ListProduct({ product }) {
           <strong className="text-start fs-5 fw-bolder">
             {formatter(product.price)}
           </strong>
-          {/* <Button
-            variant="warning"
-            className="float-end"
-            // onCLick={addToCartHandler}
-          >
-            Add to cart
-          </Button> */}
           {product.count === 0 ? (
             <Button variant="light" className="float-end" disabled>
               Out of stock

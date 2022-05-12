@@ -56,9 +56,6 @@ function Rating({ rating, review, caption }) {
           }
         />
       </span>
-      {/* <span className="float-end fw-bolder" style={{ color: "darkorange" }}>
-        {review} reviews
-      </span> */}
       {caption ? (
         <span className="">{caption}</span>
       ) : (

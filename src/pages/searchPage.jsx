@@ -74,7 +74,7 @@ export const ratings = [
 function SearchPage() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Shirts
+  const sp = new URLSearchParams(search);
   const category = sp.get("category") || "all";
   const query = sp.get("query") || "all";
   const price = sp.get("price") || "all";
@@ -145,7 +145,7 @@ function SearchPage() {
                   Any
                 </Link>
               </li>
-              {categories.map((c) => (
+              {categories?.map((c) => (
                 <li key={c}>
                   <Link
                     className={c === category ? "text-bold" : ""}
@@ -168,7 +168,7 @@ function SearchPage() {
                   Any
                 </Link>
               </li>
-              {prices.map((p) => (
+              {prices?.map((p) => (
                 <li key={p.value}>
                   <Link
                     to={getFilterUrl({ price: p.value })}
@@ -183,7 +183,7 @@ function SearchPage() {
           <div>
             <h3>Avg. Customer Review</h3>
             <ul>
-              {ratings.map((r) => (
+              {ratings?.map((r) => (
                 <li key={r.name}>
                   <Link
                     to={getFilterUrl({ rating: r.rating })}
@@ -252,7 +252,7 @@ function SearchPage() {
               )}
 
               <Row>
-                {products.map((product) => (
+                {products?.map((product) => (
                   <Col sm={6} lg={4} className="mb-3" key={product._id}>
                     <ListProduct product={product}></ListProduct>
                   </Col>

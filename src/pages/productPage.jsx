@@ -4,16 +4,11 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import { formatter } from "../script/formatter";
 import { Star } from "react-bootstrap-icons";
-// import { Link } from "react-router-dom";
-// import { Highlight } from "react-instantsearch-dom";
-// import CustomRefinementList from "../components/custom-filter";
 import {
   InstantSearch,
   Hits,
   SearchBox,
   Pagination,
-  // Highlight,
-  // ClearRefinements,
   RefinementList,
   Configure,
 } from "react-instantsearch-dom";
@@ -30,7 +25,6 @@ class SearchComponent extends Component {
         <Container className="cont mt-4">
           <InstantSearch indexName="products" searchClient={searchClient}>
             <div className="d-md-flex justify-content-between ">
-              {/* <ClearRefinements />  */}
               <div className="d-flex gap-4 sorted mb-3">
                 <div>
                   <h6 className="fw-bolder">Brand</h6>

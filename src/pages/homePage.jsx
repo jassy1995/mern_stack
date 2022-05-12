@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from "react";
-// import data from "../api/data";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListProduct from "../components/list-product";
@@ -20,15 +19,15 @@ function HomePage() {
 
   const styleLoader = {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
     position: "fixed",
     left: "0px",
-    top: "30px",
+    top: "80px",
     width: "100%",
-    height: "100%",
-    zIndex: "9999",
+    height: "70%",
   };
 
   useEffect(() => {
@@ -47,28 +46,22 @@ function HomePage() {
     console.log(products);
   }, []);
 
-  // const { state, dispatch: ctxDispatch } = useContext();
-  // const addToCartHandler = () => {
-  //   ctxDispatch({
-  //     type: "ADD_TO_CART",
-  //     payload: { ...product, quantity: 1 },
-  //   });
-  // };
-
   return (
     <div className="mt-4">
       <ErrorBoundary>
         {loading ? (
-          <div
-            style={styleLoader}
-            className="flex justify-content-center my-40 fs-3"
-          >
+          <div style={styleLoader} className="fs-3">
             <FetchingSpinner />
             <div className="pl-4 ml-4"> fetching...</div>
           </div>
         ) : error ? (
-          <div style={styleLoader} className="fs-3 text-danger">
-            <MessageBox variant="danger">{error}</MessageBox>
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : !loading && products.length === 0 ? (
+          <div style={styleLoader} className="fs-4">
+            <div>
+              <i className="bi bi-exclamation-circle fs-3"></i>
+            </div>
+            <div className="pl-4 ml-4">No Product</div>
           </div>
         ) : (
           <Row>
@@ -76,21 +69,19 @@ function HomePage() {
               <title>Home</title>
             </Helmet>
             <h1>Feature Product</h1>
-            {products.map((product) => (
-              <Col
-                key={product._id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                className="mb-3"
-              >
-                <ListProduct
-                  product={product}
-                  // addToCartHandler={addToCartHandler}
-                />
-              </Col>
-            ))}
+            {products.length > 0 &&
+              products.map((product) => (
+                <Col
+                  key={product._id}
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={3}
+                  className="mb-3"
+                >
+                  <ListProduct product={product} />
+                </Col>
+              ))}
           </Row>
         )}
       </ErrorBoundary>
