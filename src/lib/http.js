@@ -11,7 +11,7 @@ const http = axios.create({
 http.interceptors.request.use((config) => {
   const { intercept = true } = config;
   if (!intercept) return config;
-  const token = localStorage.getItem("userInfo") || "";
+  const token = JSON.parse(localStorage.getItem("userInfo")) || "";
   if (token.token) config.headers["authorization"] = token.token;
   return config;
 });
