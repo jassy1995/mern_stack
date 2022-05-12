@@ -36,6 +36,7 @@ function App() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { fullBox, cart, userInfo } = state;
+  console.log(cart, userInfo, ctxDispatch);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -72,14 +73,14 @@ function App() {
         }
       >
         <ToastContainer position="top-right" limit={1} />
-        {/* <ErrorBoundary> */}
-        <Navbar
-          toggleSideBar={toggleSideBar}
-          categories={categories}
-          toggleSideBarFalse={toggleSideBarFalse}
-          sidebarIsOpen={sidebarIsOpen}
-        />
-        {/* </ErrorBoundary> */}
+        <ErrorBoundary>
+          <Navbar
+            toggleSideBar={toggleSideBar}
+            categories={categories}
+            toggleSideBarFalse={toggleSideBarFalse}
+            sidebarIsOpen={sidebarIsOpen}
+          />
+        </ErrorBoundary>
         <div className="container-fluid mt-5" style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<HomePage />}></Route>

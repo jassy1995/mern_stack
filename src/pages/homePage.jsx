@@ -43,8 +43,7 @@ function HomePage() {
       }
     };
     fetchData();
-    console.log(products);
-  }, []);
+  }, [products]);
 
   return (
     <div className="mt-4">

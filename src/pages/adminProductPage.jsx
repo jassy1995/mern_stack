@@ -158,6 +158,7 @@ function AdminProductPage() {
         });
       }
     }
+    console.log(ctxDispatch);
   };
 
   const submitHandler = async (e) => {

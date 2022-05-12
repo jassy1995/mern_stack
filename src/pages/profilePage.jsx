@@ -44,7 +44,7 @@ function ProfilePage() {
           password,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       dispatch({
@@ -59,6 +59,8 @@ function ProfilePage() {
       });
       toast.error(errorHandler(err));
     }
+    console.log(confirmPassword);
+    console.log(loadingUpdate);
   };
 
   return (
