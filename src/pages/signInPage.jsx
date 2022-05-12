@@ -4,11 +4,11 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
-import axios from "axios";
 import { Store } from "../store";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { errorHandler } from "../script/error";
+import http from "../lib/http";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function SignInPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/api/users/signin", {
+      const { data } = await http.post("/api/users/signin", {
         email,
         password,
       });
