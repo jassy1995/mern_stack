@@ -205,7 +205,7 @@ function UserListPage() {
         </div>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
-      ) : !loading && users.length === 0 ? (
+      ) : !loading && !error && users.length === 0 ? (
         <div style={styleLoader} className="fs-4">
           <div>
             <i className="bi bi-exclamation-circle fs-3"></i>

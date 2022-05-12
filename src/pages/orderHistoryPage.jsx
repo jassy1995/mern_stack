@@ -73,7 +73,7 @@ function OrderHistoryPage() {
         <FetchingSpinner></FetchingSpinner>
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
-      ) : !loading && orders.length === 0 ? (
+      ) : !loading && !error && orders.length === 0 ? (
         <div style={styleLoader} className="fs-4">
           <div>
             <i className="bi bi-exclamation-circle fs-3"></i>
