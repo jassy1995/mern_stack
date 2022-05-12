@@ -47,9 +47,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await http.get("/api/orders/summary", {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await http.get("/api/orders/summary");
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({

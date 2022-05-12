@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useReducer } from "react";
-import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
@@ -14,6 +13,7 @@ import { toast } from "react-toastify";
 import { errorHandler } from "../script/error";
 import FetchingSpinner from "../components/spinner";
 import { orderReducer } from "../api/reducers";
+import http from "../lib/http";
 
 function PlaceOrderPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ function PlaceOrderPage() {
     try {
       dispatch({ type: "CREATE_REQUEST" });
       console.log(cart.cartItems);
-      const { data } = await axios.post("/api/orders", {
+      const { data } = await http.post("/api/orders", {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,

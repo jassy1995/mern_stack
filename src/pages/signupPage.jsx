@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -8,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { Store } from "../store";
 import { toast } from "react-toastify";
 import { errorHandler } from "../script/error";
+import http from "../lib/http";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function SignupPage() {
     }
 
     try {
-      const { data } = await axios.post("/api/users/signup", {
+      const { data } = await http.post("/api/users/signup", {
         name,
         email,
         password,
