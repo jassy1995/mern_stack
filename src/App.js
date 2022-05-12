@@ -35,14 +35,13 @@ function App() {
   const [categories, setCategories] = useState([]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { fullBox, cart, userInfo } = state;
-  console.log(cart, userInfo, ctxDispatch);
+  const { fullBox } = state;
+  console.log(ctxDispatch);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`);
-        console.log(data);
         setCategories(data);
       } catch (err) {
         toast.error(errorHandler(err));
