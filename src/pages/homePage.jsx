@@ -42,7 +42,7 @@ function HomePage() {
       }
     };
     fetchData();
-  }, [products]);
+  }, []);
 
   return (
     <div className="mt-4">
