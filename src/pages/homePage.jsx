@@ -2,7 +2,6 @@ import React, { useEffect, useReducer } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListProduct from "../components/list-product";
-import ErrorBoundary from "../error-handler";
 import { productReducer, initialState } from "../api/reducers";
 import FetchingSpinner from "../components/spinner";
 import MessageBox from "../components/message-box";
@@ -47,43 +46,41 @@ function HomePage() {
 
   return (
     <div className="mt-4">
-      <ErrorBoundary>
-        {loading ? (
-          <div style={styleLoader} className="fs-3">
-            <FetchingSpinner />
-            <div className="pl-4 ml-4"> fetching...</div>
+      {loading ? (
+        <div style={styleLoader} className="fs-3">
+          <FetchingSpinner />
+          <div className="pl-4 ml-4"> fetching...</div>
+        </div>
+      ) : error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : !loading && !error && products.length === 0 ? (
+        <div style={styleLoader} className="fs-4">
+          <div>
+            <i className="bi bi-exclamation-circle fs-3"></i>
           </div>
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : !loading && !error && products.length === 0 ? (
-          <div style={styleLoader} className="fs-4">
-            <div>
-              <i className="bi bi-exclamation-circle fs-3"></i>
-            </div>
-            <div className="pl-4 ml-4">No Product</div>
-          </div>
-        ) : (
-          <Row>
-            <Helmet>
-              <title>Home</title>
-            </Helmet>
-            <h1>Feature Product</h1>
-            {products.length > 0 &&
-              products.map((product) => (
-                <Col
-                  key={product._id}
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  className="mb-3"
-                >
-                  <ListProduct product={product} />
-                </Col>
-              ))}
-          </Row>
-        )}
-      </ErrorBoundary>
+          <div className="pl-4 ml-4">No Product</div>
+        </div>
+      ) : (
+        <Row>
+          <Helmet>
+            <title>Home</title>
+          </Helmet>
+          <h1>Feature Product</h1>
+          {products.length > 0 &&
+            products.map((product) => (
+              <Col
+                key={product._id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                className="mb-3"
+              >
+                <ListProduct product={product} />
+              </Col>
+            ))}
+        </Row>
+      )}
     </div>
   );
 }
